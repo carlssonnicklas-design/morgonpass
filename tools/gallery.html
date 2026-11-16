@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><title>Animationsgalleri</title>
+<link rel="stylesheet" href="../styles.css">
+<style>body{padding:12px} .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px} .cell{background:var(--surface);border-radius:12px;padding:6px;text-align:center;font-size:12px}</style>
+</head><body><div class="grid" id="g"></div>
+<script type="module">
+import { ANIMS, Coach } from '../js/animations.js';
+const g = document.getElementById('g');
+const q = new URLSearchParams(location.search); const from = +(q.get('from') || 0);
+g.style.gridTemplateColumns = `repeat(${q.get('cols') || 8},1fr)`;
+for (const k of Object.keys(ANIMS).slice(from, from + 32)) { const d = document.createElement('div'); d.className = 'cell'; g.appendChild(d); new Coach(d).set(k); d.append(k); }
+</script></body></html>
