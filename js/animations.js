@@ -8,6 +8,8 @@
 //   x = höftens x-förskjutning, lift = höjd över golvet (hopp),
 //   ft = fotens vinkel relativt underbenet (90 = vanlig fot, mindre = tåhävning)
 // Figuren placeras automatiskt så att lägsta punkten vilar på golvet.
+// Vinklar interpoleras linjärt: skriv dem så att varje led roterar den väg kroppen
+// faktiskt rör sig (t.ex. -195 i stället för 165), annars svänger leden genom golvet.
 
 const L = { torso: 48, neck: 5, head: 10, upper: 27, fore: 25, thigh: 36, shin: 36, foot: 9 };
 const GROUND = 186;
@@ -44,18 +46,20 @@ export const ANIMS = {
     P({ t: 165, a1: -50, b1: -48, a2: -50, b2: -48, l1: 25, l2: -18, m1: 23, m2: -18 }),
     P({ ...ARMS_UP, lift: 18, ft: 40, fft: 40 }),
   ] },
+  // Vinklarna i sittläget är skrivna som -192/-270 (= 168/90) så att bålen och armarna
+  // roterar uppåt när figuren reser sig, inte genom golvet.
   rower: { dur: 3000, frames: [
     P({ ...SUPINE, a1: -95, a2: -95, b1: -93, b2: -93 }),
-    P({ t: 168, a1: 90, a2: 90, b1: 88, b2: 88, l1: 145, l2: 15, m1: 143, m2: 13 }),
+    P({ t: -195, a1: -272, a2: -272, b1: -270, b2: -270, l1: 145, l2: 15, m1: 143, m2: 13 }),
   ] },
   squatBender: { dur: 4400, frames: [P(), P(SQUAT), P(), P({ t: 12, a1: 0, a2: 0, b1: 2, b2: 2 })] },
   windmill: { dur: 3600, frames: [
     P({ a1: 90, a2: 90, b1: -90, b2: -90 }),
-    P({ t: 35, a1: 5, a2: 5, b1: 175, b2: 175, l1: 8, m1: -4 }),
+    P({ t: 35, a1: 5, a2: 5, b1: -185, b2: -185, l1: 8, m1: -4 }),
     P({ a1: 90, a2: 90, b1: -90, b2: -90 }),
     P({ t: 35, a1: 175, a2: 175, b1: 5, b2: 5, l1: 8, m1: -4 }),
   ] },
-  proneRow: { dur: 2600, frames: [P(PRONE), P({ ...PRONE, t: 104, a1: -100, a2: 70, b1: -98, b2: 72 })] },
+  proneRow: { dur: 2600, frames: [P(PRONE), P({ ...PRONE, t: 104, a1: 260, a2: 70, b1: 262, b2: 72 })] },
   legRaise: { dur: 3000, frames: [P(SUPINE), P({ ...SUPINE, l1: 180, l2: 92, m1: 178, m2: 90 })] },
 
   pushup: { dur: 2400, frames: [P(PLANK_HI), P(PLANK_LO)] },
@@ -96,7 +100,7 @@ export const ANIMS = {
   ] },
   vUp: { dur: 2600, frames: [
     P({ ...SUPINE, a1: -95, a2: -95, b1: -93, b2: -93, l1: 95, l2: 95, m1: 95, m2: 95 }),
-    P({ t: -140, a1: 140, a2: 140, b1: 138, b2: 138, l1: 140, l2: 140, m1: 139, m2: 139 }),
+    P({ t: -140, a1: -220, a2: -220, b1: -222, b2: -222, l1: 140, l2: 140, m1: 139, m2: 139 }),
   ] },
   mountainClimber: { dur: 900, frames: [P({ ...PLANK_HI, l1: 75, l2: -15 }), P({ ...PLANK_HI, m1: 75, m2: -15 })] },
   bicycle: { dur: 1800, frames: [
@@ -117,13 +121,13 @@ export const ANIMS = {
   ] },
   situp: { dur: 2800, frames: [
     P({ ...SUPINE_KNEES, a1: -170, a2: 30, b1: -170, b2: 30 }),
-    P({ ...SUPINE_KNEES, t: 162, a1: 160, a2: 220, b1: 160, b2: 220 }),
+    P({ ...SUPINE_KNEES, t: -198, a1: -200, a2: -140, b1: -200, b2: -140 }),
   ] },
   deadBug: { dur: 3600, frames: [
     P({ t: -97, a1: 180, a2: 180, b1: 180, b2: 180, l1: 180, l2: 90, m1: 180, m2: 90 }),
-    P({ t: -97, a1: -100, a2: -100, b1: 180, b2: 180, l1: 180, l2: 90, m1: 100, m2: 100 }),
+    P({ t: -97, a1: 260, a2: 260, b1: 180, b2: 180, l1: 180, l2: 90, m1: 100, m2: 100 }),
     P({ t: -97, a1: 180, a2: 180, b1: 180, b2: 180, l1: 180, l2: 90, m1: 180, m2: 90 }),
-    P({ t: -97, a1: 180, a2: 180, b1: -100, b2: -100, l1: 100, l2: 100, m1: 180, m2: 90 }),
+    P({ t: -97, a1: 180, a2: 180, b1: 260, b2: 260, l1: 100, l2: 100, m1: 180, m2: 90 }),
   ] },
   highKnees: { dur: 700, frames: [
     P({ t: 175, l1: 95, l2: 5, a1: -40, a2: 60, b1: 50, b2: 140, lift: 4, fft: 60 }),
