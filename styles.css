@@ -110,6 +110,12 @@ button:disabled { opacity: .5; }
 .coach-svg .coach-ground { stroke: var(--border); stroke-width: 2; }
 .coach-svg .coach-shadow { fill: var(--surface-2); }
 .coach-svg .coach-prop { fill: var(--surface-2); stroke: var(--border); }
+/* Demovideo i stället för figuren (videos/<id>.mp4). Videorna är 16:9. */
+.coach-video { width: 100%; height: 100%; display: block; object-fit: contain; border-radius: 12px; background: var(--surface-2); }
+.coach-video[hidden] { display: none; }
+.player .coach.has-video { width: min(92vw, 560px, calc(46vh * 16 / 9)); aspect-ratio: 16 / 9; }
+.coach-dlg { width: min(70vw, 260px); aspect-ratio: 1; margin: 0 auto; }
+.coach-dlg.has-video { width: min(80vw, 440px); aspect-ratio: 16 / 9; }
 
 /* Bibliotek */
 .lib-item { display: grid; grid-template-columns: 84px 1fr; gap: 12px; align-items: center; }

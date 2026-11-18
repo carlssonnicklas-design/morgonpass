@@ -289,3 +289,9 @@ export const EXERCISES = [
 ];
 
 export const byId = Object.fromEntries(EXERCISES.map(e => [e.id, e]));
+
+// Övningar som har en granskad demovideo i videos/<id>.mp4. Videon visas i stället för
+// streckgubben. Kopplingen går på övningens id, inte på anim, eftersom flera övningar delar
+// animation (t.ex. leg-tuck-twist använder 'rower').
+const VIDEOS = new Set(['rower']);
+export const videoFor = (id) => (VIDEOS.has(id) ? `videos/${id}.mp4` : null);

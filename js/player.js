@@ -1,5 +1,5 @@
 // Kör ett pass: timer, röstinstruktioner, progress och tränarfigur.
-import { byId } from './exercises.js';
+import { byId, videoFor } from './exercises.js';
 import { timeline } from './planner.js';
 import { say, beep, stopSpeech, keepAwake, secText, unlockAudio } from './voice.js';
 import { Coach } from './animations.js';
@@ -117,7 +117,7 @@ export class Player {
     $('p-name').textContent = isWork ? ex.name : `Nästa: ${ex?.name || ''}`;
     $('p-cue').textContent = isWork ? ex.cues.join(' · ') : (s.label || ex?.desc || '');
     $('p-side').hidden = !(isWork && ex.sides);
-    this.coach.set(ex?.anim || 'stand');
+    this.coach.set(ex?.anim || 'stand', videoFor(ex?.id));
     // nästa-rad
     const nxt = this.steps.slice(this.i + 1).find((x) => x.kind === 'work');
     $('p-next-txt').textContent = isWork && nxt ? `Sedan: ${byId[nxt.id].name}` : '';

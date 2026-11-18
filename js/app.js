@@ -1,4 +1,4 @@
-import { EXERCISES, byId, AREAS } from './exercises.js';
+import { EXERCISES, byId, AREAS, videoFor } from './exercises.js';
 import { store, save, today, mondayOf, addDays, weekday, DAY_NAMES, DAY_SHORT, exportData, importData } from './store.js';
 import { ruleWeek, ruleWorkout, timeline, workoutAreas } from './planner.js';
 import { planWeekWithClaude, analyzeProgress, testKey, friendlyError } from './claude.js';
@@ -196,7 +196,8 @@ function renderLib() {
   const io = new IntersectionObserver((entries) => entries.forEach((en) => {
     if (en.isIntersecting && !en.target.dataset.done) {
       en.target.dataset.done = 1;
-      const c = new Coach(en.target); c.set(byId[en.target.dataset.id].anim); miniCoaches.push(c);
+      const id = en.target.dataset.id;
+      const c = new Coach(en.target); c.set(byId[id].anim, videoFor(id)); miniCoaches.push(c);
     }
   }));
   for (const e of items) {
@@ -216,12 +217,12 @@ let dlgCoach;
 function openExercise(id) {
   const e = byId[id];
   const d = $('dlg-ex');
-  d.innerHTML = `<div style="width:min(70vw,260px);aspect-ratio:1;margin:0 auto" id="dlg-coach"></div>
+  d.innerHTML = `<div class="coach-dlg" id="dlg-coach"></div>
     <h2>${esc(e.name)}</h2><p class="small muted">${{ warmup: 'Uppvärmning', main: 'Huvudpass', cooldown: 'Stretchning' }[e.phase]} · nivå ${e.level}${e.sides ? ' · båda sidor' : ''}${e.source ? ' · ' + esc(e.source) : ''}</p>
     <p>${esc(e.desc)}</p><ul>${e.cues.map((c) => `<li>${esc(c)}</li>`).join('')}</ul>
     <div class="row"><button id="dlg-say">🔊 Läs upp</button><button class="primary" id="dlg-close" style="margin-left:auto">Stäng</button></div>`;
   dlgCoach?.destroy();
-  dlgCoach = new Coach($('dlg-coach')); dlgCoach.set(e.anim);
+  dlgCoach = new Coach($('dlg-coach')); dlgCoach.set(e.anim, videoFor(e.id));
   $('dlg-close').onclick = () => d.close();
   $('dlg-say').onclick = () => { unlockAudio(); say(`${e.name}. ${e.desc} ${e.cues.join('. ')}.`, { interrupt: true }); };
   d.onclose = () => { dlgCoach?.destroy(); dlgCoach = null; };

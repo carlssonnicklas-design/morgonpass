@@ -306,11 +306,25 @@ export class Coach {
     };
     for (const k of ['armF', 'legF', 'torso', 'legN', 'head', 'armN']) this.g.appendChild(this.parts[k]);
     container.appendChild(this.svg);
+    this.container = container;
+    this.video = Object.assign(document.createElement('video'), {
+      muted: true, loop: true, playsInline: true, autoplay: true, preload: 'auto', hidden: true, className: 'coach-video',
+    });
+    this.video.setAttribute('aria-label', 'Video som visar övningen');
+    this.video.onerror = () => this._showVideo(false); // saknas/offline → streckgubben
+    container.appendChild(this.video);
+    this.videoSrc = null;
     this.key = 'stand'; this.t0 = performance.now(); this.paused = false; this.pauseAt = 0;
     this._loop = this._loop.bind(this);
     this.raf = requestAnimationFrame(this._loop);
   }
-  set(key) {
+  // key: animation i ANIMS. videoSrc: valfri video som visas i stället för figuren.
+  set(key, videoSrc = null) {
+    if (videoSrc !== this.videoSrc) {
+      this.videoSrc = videoSrc;
+      if (videoSrc) { this.video.src = videoSrc; this._showVideo(true); }
+      else { this._showVideo(false); this.video.removeAttribute('src'); this.video.load(); }
+    }
     if (!ANIMS[key]) key = 'stand';
     if (key === this.key) return;
     this.key = key; this.t0 = performance.now();
@@ -322,12 +336,28 @@ export class Coach {
       if (pr === 'bench') { const h = s0.armN[2]; this.propG.appendChild(el('rect', { x: h[0] - 34, y: h[1] + R, width: 40, height: GROUND - h[1] - R, rx: 3, class: 'coach-prop' })); }
     }
   }
-  pause(p) { this.paused = p; }
-  destroy() { cancelAnimationFrame(this.raf); this.svg.remove(); }
+  _showVideo(on) {
+    this.video.hidden = !on;
+    this.svg.style.display = on ? 'none' : '';
+    this.container.classList.toggle('has-video', on);
+    if (on && !this.paused) this.video.play().catch(() => {});
+    if (!on) this.video.pause();
+  }
+  pause(p) {
+    this.paused = p;
+    if (this.video.hidden) return;
+    if (p) this.video.pause(); else this.video.play().catch(() => {});
+  }
+  destroy() {
+    cancelAnimationFrame(this.raf); this.svg.remove();
+    this.video.pause(); this.video.removeAttribute('src'); this.video.load(); this.video.remove();
+    this.container.classList.remove('has-video');
+  }
   _loop(now) {
     this.raf = requestAnimationFrame(this._loop);
     if (this.paused) { this.t0 += now - (this._last || now); this._last = now; return; }
     this._last = now;
+    if (!this.video.hidden) return; // videon visas, figuren behöver inte ritas
     const anim = ANIMS[this.key];
     const s = skeleton(poseAt(anim, now - this.t0));
     const f = fitFor(this.key);
