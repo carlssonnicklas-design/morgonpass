@@ -296,6 +296,7 @@ export const byId = Object.fromEntries(EXERCISES.map(e => [e.id, e]));
 const VIDEOS = new Set([
   'rower', 'high-jumper', 'squat-bender', 'windmill', 'prone-row', 'body-twist',
   'reverse-lunge', 'pushup', 'jumping-jacks',
+  'march', 'inchworm', 'shadow-box', 'squat', 'squat-jump', 'turn-lunge', 'glute-bridge',
 ]);
 // Övningar som visar samma rörelse som en annan övning och därför delar dess klipp.
 const VIDEO_ALIAS = {
