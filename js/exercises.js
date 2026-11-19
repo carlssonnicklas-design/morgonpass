@@ -293,5 +293,16 @@ export const byId = Object.fromEntries(EXERCISES.map(e => [e.id, e]));
 // Övningar som har en granskad demovideo i videos/<id>.mp4. Videon visas i stället för
 // streckgubben. Kopplingen går på övningens id, inte på anim, eftersom flera övningar delar
 // animation (t.ex. leg-tuck-twist använder 'rower').
-const VIDEOS = new Set(['rower']);
-export const videoFor = (id) => (VIDEOS.has(id) ? `videos/${id}.mp4` : null);
+const VIDEOS = new Set([
+  'rower', 'high-jumper', 'squat-bender', 'windmill', 'prone-row', 'body-twist',
+  'reverse-lunge', 'pushup', 'jumping-jacks',
+]);
+// Övningar som visar samma rörelse som en annan övning och därför delar dess klipp.
+const VIDEO_ALIAS = {
+  'forward-lunge-wu': 'forward-lunge', 'rear-lunge-wu': 'reverse-lunge', 'pushup-wu': 'pushup',
+  'shadow-box-wu': 'shadow-box', 'jacks-main': 'jumping-jacks',
+};
+export const videoFor = (id) => {
+  const v = VIDEO_ALIAS[id] || id;
+  return VIDEOS.has(v) ? `videos/${v}.mp4` : null;
+};
