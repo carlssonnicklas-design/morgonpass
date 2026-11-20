@@ -1,5 +1,5 @@
 // Service worker: gör appen tillgänglig offline. Höj VERSION vid ändringar.
-const VERSION = 'morgonpass-v5';
+const VERSION = 'morgonpass-v6';
 const SHELL = [
   './', 'index.html', 'styles.css', 'manifest.webmanifest',
   'js/app.js', 'js/animations.js', 'js/exercises.js', 'js/planner.js', 'js/player.js', 'js/store.js', 'js/voice.js', 'js/claude.js',
