@@ -299,6 +299,8 @@ const VIDEOS = new Set([
   'march', 'inchworm', 'shadow-box', 'squat', 'squat-jump', 'turn-lunge', 'glute-bridge',
   'calf-raise', 'side-lunge', 'single-leg-deadlift', 'frog-jump', 'half-squat-laterals', 'wide-pushup',
   'single-leg-pushup', 'pike-pushup', 'chair-dips', 'eight-count-pushup', 'prone-y-raise',
+  'back-bridge', 'v-up', 'mountain-climber', 'flutter-kicks', 'russian-twist', 'situp',
+  'superman', 'burpee', 'high-knees', 'tuck-jump', 'skater', 'quarter-turn-jump',
 ]);
 // Övningar som visar samma rörelse som en annan övning och därför delar dess klipp.
 const VIDEO_ALIAS = {
