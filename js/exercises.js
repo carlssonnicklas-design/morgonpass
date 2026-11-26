@@ -306,6 +306,7 @@ const VIDEOS = new Set([
   'bend-reach', 'hip-circles', 'single-leg-bridge', 'staggered-squat-jump', 'plank-shoulder-tap', 'bear-crawl',
   'bent-leg-raise', 'leg-tuck-twist', 'supine-bicycle', 'swimmer', 'half-jacks', 'straddle-run',
   'knee-lift-side', 'chest-stretch', 'pigeon', 'deep-breathing',
+  'arm-circles', 'wall-sit', 'knee-pushup', 'diamond-pushup', 'dead-bug', 'front-kick-toe-touch',
 ]);
 // Övningar som visar samma rörelse som en annan övning och därför delar dess klipp.
 const VIDEO_ALIAS = {
